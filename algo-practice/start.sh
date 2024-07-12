@@ -18,6 +18,6 @@ next_dir=$(printf "day-%03d" "$next_num")
 mkdir "$next_dir"
 
 # Create the specified files within the new directory
-touch "$next_dir/binary_search.go" "$next_dir/binary_search_test.go" "$next_dir/quicksort.go" "$next_dir/quicksort_test.go"
+touch "$next_dir/binary_search.go" "$next_dir/binary_search_test.go" "$next_dir/quicksort.go" "$next_dir/quicksort_test.go" "$next_dir/counting_sort.go" "$next_dir/counting_sort_test.go"
 
 echo "Created directory $next_dir with the required files."

@@ -1,5 +1,7 @@
 package leetcode
 
+import "sort"
+
 /*
 1679. Max Numbers of K-Sum Pairs
 
@@ -41,6 +43,41 @@ func maxOperations(nums []int, k int) int {
 			}
 			m[current]--
 			m[complement]--
+			ops++
+		}
+	}
+	return ops
+}
+
+func maxOperationOnePass(nums []int, k int) int {
+	m := map[int]int{}
+	ops := 0
+	for i := 0; i < len(nums); i++ {
+		current := nums[i]
+		complement := k - current
+		if m[complement] > 0 {
+			m[complement]--
+			ops++
+		} else {
+			m[current]++
+		}
+	}
+	return ops
+}
+
+func maxOperationsSortTwoPointers(nums sort.IntSlice, k int) int {
+	sort.Sort(nums)
+	ops := 0
+	left := 0
+	right := len(nums) - 1
+	for left < right {
+		if (nums[left] + nums[right]) < k {
+			left++
+		} else if (nums[left] + nums[right]) > k {
+			right--
+		} else {
+			left++
+			right--
 			ops++
 		}
 	}

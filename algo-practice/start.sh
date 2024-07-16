@@ -17,7 +17,13 @@ next_dir=$(printf "day-%03d" "$next_num")
 # Create the new directory
 mkdir "$next_dir"
 
-# Create the specified files within the new directory
-touch "$next_dir/binary_search.go" "$next_dir/binary_search_test.go" "$next_dir/quicksort.go" "$next_dir/quicksort_test.go" "$next_dir/counting_sort.go" "$next_dir/counting_sort_test.go"
+# Create the specified files within the new directory and add "package practice" at the top
+for file in binary_search.go binary_search_test.go quicksort.go quicksort_test.go counting_sort.go counting_sort_test.go; 
+do
+    echo "package practice" > "$next_dir/$file"
+done
+
+cd $next_dir
+go mod init practice
 
 echo "Created directory $next_dir with the required files."

@@ -18,7 +18,7 @@ next_dir=$(printf "day-%03d" "$next_num")
 mkdir "$next_dir"
 
 # Create the specified files within the new directory and add "package practice" at the top
-for file in binary_search.go binary_search_test.go quicksort.go quicksort_test.go counting_sort.go counting_sort_test.go tree.go tree_test.go; 
+for file in binary_search.go binary_search_test.go quicksort.go quicksort_test.go counting_sort.go counting_sort_test.go tree.go tree_test.go graph.go graph_test.go; 
 do
     echo "package practice" > "$next_dir/$file"
 done

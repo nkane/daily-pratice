@@ -20,12 +20,17 @@ jobs:
 
       - name: Run tests in new directories
         run: |
-          git diff --name-status HEAD~1 | grep '^A' | awk '{print $2}' | xargs -I {} dirname {} | sort | uniq > new_dirs.txt
-          while read dir; do
-            if [ -d "$dir" ] && [ -f "$dir/go.mod" ]; then
-              cd "$dir"
-              echo "Running tests in $dir"
-              go test -v ./...
-              cd - > /dev/null
-            fi
-          done < new_dirs.txt
+          if [ $(git rev-list --count HEAD) -gt 1 ]; then
+            git diff --name-status HEAD~1 | grep '^A' | awk '{print $2}' | xargs -I {} dirname {} | sort | uniq > new_dirs.txt
+            while read dir; do
+              if [ -d "$dir" ] && [ -f "$dir/go.mod" ]; then
+                cd "$dir"
+                echo "Running tests in $dir"
+                go test -v ./...
+                cd - > /dev/null
+              fi
+            done < new_dirs.txt
+          else
+            echo "No new directories to test."
+            exit 0
+          fi

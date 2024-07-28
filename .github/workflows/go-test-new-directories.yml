@@ -1,0 +1,31 @@
+name: Go Test New Directories
+
+on:
+  push:
+    paths:
+      - "**/*"
+
+jobs:
+  go-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: "1.22"
+
+      - name: Run tests in new directories
+        run: |
+          git diff --name-status HEAD~1 | grep '^A' | awk '{print $2}' | xargs -I {} dirname {} | sort | uniq > new_dirs.txt
+          while read dir; do
+            if [ -d "$dir" ] && [ -f "$dir/go.mod" ]; then
+              cd "$dir"
+              echo "Running tests in $dir"
+              go test -v ./...
+              cd - > /dev/null
+            fi
+          done < new_dirs.txt

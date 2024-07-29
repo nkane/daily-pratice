@@ -1,9 +1,12 @@
-name: Go Test New Directories
+name: Run Go Tests on Changed Directories
 
 on:
   push:
-    paths:
-      - "**/*"
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   go-test:
@@ -11,42 +14,23 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
-        with:
-          # checkout full tree
-          fetch-depth: 0
+        uses: actions/checkout@v3
 
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
           go-version: "1.22"
 
-      - name: Run tests in new directories
+      - name: Determine Changed Directories
+        id: changes
         run: |
+          echo "changed_dirs=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '^' | xargs -I {} dirname {} | sort | uniq)" >> $GITHUB_ENV
 
-          echo "Checking the number of commits..."
-          commit_count=$(git rev-list --count HEAD)
-          echo "Commit count: $commit_count"
-          if [ "$commit_count" -ge 1 ]; then
-              echo "Fetching list of new directories..."
-              git diff ${{github.event.before}} ${{github.sha}} | awk '{print $2}' | xargs -I {} dirname {} | sort | uniq > new_dirs.txt
-              if [ ! -s new_dirs.txt ]; then
-                echo "No new directories found."
-                exit 0
-              fi
-              while read -r dir; do
-                echo "Processing directory: $dir"
-                if [ -d "$dir" ] && [ -f "$dir/go.mod" ]; then
-                  cd "$dir"
-                  echo "Running tests in $dir"
-                  go test -v ./...
-                  cd - > /dev/null
-                else
-                  echo "Skipping $dir: not a Go module or no go.mod file found."
-                fi
-              done < new_dirs.txt
-              rm new_dirs.txt
-          else
-              echo "No new directories to test."
-              exit 0
-          fi
+      - name: Run Tests
+        run: |
+          for dir in ${{ env.changed_dirs }}; do
+            if [ -d "$dir" ]; then
+              echo "Running tests in $dir"
+              (cd "$dir" && go test ./...)
+            fi
+          done

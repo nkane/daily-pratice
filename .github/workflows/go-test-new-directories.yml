@@ -29,16 +29,25 @@ jobs:
           # Check if this is the first commit
           if [ $(git rev-list --count HEAD) -eq 1 ]; then
             echo "This is the first commit."
-            echo "changed_dirs=$(git ls-tree --name-only HEAD | xargs -I {} dirname {} | sort | uniq)" >> $GITHUB_ENV
+            changed_dirs=$(git ls-tree --name-only -d HEAD)
           else
-            echo "changed_dirs=$(git diff --name-only HEAD~1 HEAD | xargs -I {} dirname {} | sort | uniq)" >> $GITHUB_ENV
+            changed_dirs=$(git diff --name-only HEAD~1 HEAD | xargs -I {} dirname {} | sort | uniq)
           fi
+
+          # Print the directories to be tested
+          echo "Directories to be tested: $changed_dirs"
+
+          # Escape directory names for use in environment variables
+          escaped_dirs=$(echo $changed_dirs | sed 's/ /%20/g')
+          echo "escaped_dirs=$escaped_dirs" >> $GITHUB_ENV
 
       - name: Run Tests
         run: |
-          for dir in ${{ env.changed_dirs }}; do
+          # Decode the escaped directory names
+          decoded_dirs=$(echo ${{ env.escaped_dirs }} | sed 's/%20/ /g')
+          for dir in $decoded_dirs; do
             if [ -d "$dir" ]; then
               echo "Running tests in $dir"
-              (cd "$dir" && go test -v ./...)
+              (cd "$dir" && go test ./...)
             fi
           done

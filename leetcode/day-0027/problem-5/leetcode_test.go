@@ -19,7 +19,11 @@ func TestPairSums(t *testing.T) {
 	list.Next.Next.Next = &ListNode{
 		Val: 4,
 	}
+
 	got := pairSum(list)
 	expected := 8
+	assert.DeepEqual(t, expected, got)
+
+	got = pairSum_reverse(list)
 	assert.DeepEqual(t, expected, got)
 }

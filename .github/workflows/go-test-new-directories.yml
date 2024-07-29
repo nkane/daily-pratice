@@ -39,6 +39,6 @@ jobs:
           for dir in ${{ env.changed_dirs }}; do
             if [ -d "$dir" ]; then
               echo "Running tests in $dir"
-              (cd "$dir" && go test ./...)
+              (cd "$dir" && go test -v ./...)
             fi
           done

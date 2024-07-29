@@ -12,12 +12,12 @@ func Quicksort[T constraints.Ordered](a []T, lo int, hi int) {
 }
 
 func Partition[T constraints.Ordered](a []T, lo int, hi int) int {
-	pivot := a[hi]
 	i := lo
+	pivot := a[hi]
 	for j := lo; j <= hi-1; j++ {
-		if a[j] <= pivot {
+		if pivot > a[j] {
 			a[i], a[j] = a[j], a[i]
-			i = i + 1
+			i++
 		}
 	}
 	a[i], a[hi] = a[hi], a[i]

@@ -3,7 +3,7 @@ commit_count=$(git rev-list --count HEAD)
 echo "Commit count: $commit_count"
 if [ "$commit_count" -gt 1 ]; then
     echo "Fetching list of new directories..."
-    git diff --name-status HEAD~1 | grep '^A' | awk '{print $2}' | xargs -I {} dirname {} | sort | uniq > new_dirs.txt
+    git diff --name-status HEAD~2 | grep '^A' | awk '{print $2}' | xargs -I {} dirname {} | sort | uniq > new_dirs.txt
     echo "Contents of new_dirs.txt:"
     cat new_dirs.txt
     if [ ! -s new_dirs.txt ]; then

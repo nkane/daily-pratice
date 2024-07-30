@@ -81,3 +81,30 @@ func TestBFS(t *testing.T) {
 	expected := "1 2 3 4 5 6 7 8 9 10 "
 	assert.Assert(t, expected == got, "expected:\n%s, got:\n%s", expected, got)
 }
+
+func TestMaxDepth(t *testing.T) {
+	root := TreeNode[int]{
+		Data: 3,
+		Left: &TreeNode[int]{
+			Data: 9,
+		},
+		Right: &TreeNode[int]{
+			Data: 20,
+			Left: &TreeNode[int]{
+				Data: 15,
+			},
+			Right: &TreeNode[int]{
+				Data: 7,
+			},
+		},
+	}
+	expected := 3
+	got := maxDepth_dfs_recursive(&root)
+	assert.Assert(t, got == expected)
+
+	got = maxDepth_bfs(&root)
+	assert.Assert(t, got == expected)
+
+	got = maxDepth_dfs_preorder_iterative(&root)
+	assert.Assert(t, got == expected)
+}

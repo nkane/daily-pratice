@@ -109,3 +109,71 @@ func TestMaxDepth(t *testing.T) {
 	got = MaxDepth_DFS_Preorder_Iterative(&root)
 	assert.Assert(t, got == expected)
 }
+
+func TestGoodNodes(t *testing.T) {
+	root := &TreeNode[int]{
+		Data: 3,
+		Left: &TreeNode[int]{
+			Data: 1,
+			Left: &TreeNode[int]{
+				Data: 3,
+			},
+		},
+		Right: &TreeNode[int]{
+			Data: 4,
+			Left: &TreeNode[int]{
+				Data: 1,
+			},
+			Right: &TreeNode[int]{
+				Data: 5,
+			},
+		},
+	}
+	expected := 4
+	got := goodNodes(root)
+	assert.Assert(t, expected == got, "expected %d, got %d\n", expected, got)
+	got = goodNodes_dfs(root)
+	assert.Assert(t, expected == got, "expected %d, got %d\n", expected, got)
+
+	root = &TreeNode[int]{
+		Data: 3,
+		Left: &TreeNode[int]{
+			Data: 3,
+			Left: &TreeNode[int]{
+				Data: 4,
+			},
+			Right: &TreeNode[int]{
+				Data: 2,
+			},
+		},
+	}
+	expected = 3
+	got = goodNodes(root)
+	assert.Assert(t, expected == got, "expected %d, got %d\n", expected, got)
+	got = goodNodes_dfs(root)
+	assert.Assert(t, expected == got, "expected %d, got %d\n", expected, got)
+
+	root = &TreeNode[int]{
+		Data: 1,
+	}
+	expected = 1
+	got = goodNodes(root)
+	assert.Assert(t, expected == got, "expected %d, got %d\n", expected, got)
+	got = goodNodes_dfs(root)
+	assert.Assert(t, expected == got, "expected %d, got %d\n", expected, got)
+
+	root = &TreeNode[int]{
+		Data: 9,
+		Right: &TreeNode[int]{
+			Data: 3,
+			Left: &TreeNode[int]{
+				Data: 6,
+			},
+		},
+	}
+	expected = 1
+	got = goodNodes(root)
+	assert.Assert(t, expected == got, "expected %d, got %d\n", expected, got)
+	got = goodNodes_dfs(root)
+	assert.Assert(t, expected == got, "expected %d, got %d\n", expected, got)
+}

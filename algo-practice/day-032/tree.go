@@ -3,6 +3,8 @@ package practice
 import (
 	"container/list"
 	"fmt"
+
+	"golang.org/x/exp/constraints"
 )
 
 type TreeNode[T any] struct {
@@ -181,4 +183,64 @@ func MaxDepth_DFS_Preorder_Iterative[T any](root *TreeNode[T]) int {
 		}
 	}
 	return level
+}
+
+func goodNodes[T constraints.Ordered](root *TreeNode[T]) int {
+	type Element struct {
+		Node *TreeNode[T]
+		Max  T
+	}
+	q := list.New()
+	q.PushBack(Element{
+		Node: root,
+		Max:  root.Data,
+	})
+	goodNodes := 0
+	for q.Len() > 0 {
+		element, _ := q.Remove(q.Front()).(Element)
+		if element.Node != nil {
+			if element.Max <= element.Node.Data {
+				goodNodes++
+			}
+			if element.Node.Right != nil {
+				e := Element{
+					Node: element.Node.Right,
+				}
+				e.Max = element.Max
+				if e.Max < element.Node.Right.Data {
+					e.Max = element.Node.Right.Data
+				}
+				q.PushBack(e)
+			}
+			if element.Node.Left != nil {
+				e := Element{
+					Node: element.Node.Left,
+				}
+				e.Max = element.Max
+				if e.Max < element.Node.Left.Data {
+					e.Max = element.Node.Left.Data
+				}
+				q.PushBack(e)
+			}
+		}
+	}
+	return goodNodes
+}
+
+func goodNodes_dfs[T constraints.Ordered](root *TreeNode[T]) int {
+	return dfs(root, root.Data)
+}
+
+func dfs[T constraints.Ordered](node *TreeNode[T], maxValue T) int {
+	if node == nil {
+		return 0
+	}
+	res := 0
+	if node.Data >= maxValue {
+		res = 1
+		maxValue = node.Data
+	}
+	res += dfs(node.Left, maxValue)
+	res += dfs(node.Right, maxValue)
+	return res
 }

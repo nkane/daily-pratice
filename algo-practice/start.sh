@@ -25,5 +25,8 @@ done
 
 cd $next_dir
 go mod init practice
+go get golang.org/x/exp/constraints
+go get gotest.tools/assert
+go mod tidy
 
 echo "Created directory $next_dir with the required files."

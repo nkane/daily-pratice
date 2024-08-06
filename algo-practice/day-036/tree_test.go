@@ -160,69 +160,69 @@ func TestMaxDepth(t *testing.T) {
 // there are no nodes with a value greater than X.
 // Return the number of good nodes in the binary tree.
 func TestGoodNodes(t *testing.T) {
-	root := &TreeNode[int]{
-		Data: 3,
-		Left: &TreeNode[int]{
-			Data: 1,
-			Left: &TreeNode[int]{
+	tests := []struct {
+		Root     *TreeNode[int]
+		Expected int
+	}{
+		{
+			Root: &TreeNode[int]{
 				Data: 3,
+				Left: &TreeNode[int]{
+					Data: 1,
+					Left: &TreeNode[int]{
+						Data: 3,
+					},
+				},
+				Right: &TreeNode[int]{
+					Data: 4,
+					Left: &TreeNode[int]{
+						Data: 1,
+					},
+					Right: &TreeNode[int]{
+						Data: 5,
+					},
+				},
 			},
+			Expected: 4,
 		},
-		Right: &TreeNode[int]{
-			Data: 4,
-			Left: &TreeNode[int]{
+		{
+			Root: &TreeNode[int]{
+				Data: 3,
+				Left: &TreeNode[int]{
+					Data: 3,
+					Left: &TreeNode[int]{
+						Data: 4,
+					},
+					Right: &TreeNode[int]{
+						Data: 2,
+					},
+				},
+			},
+			Expected: 3,
+		},
+		{
+			Root: &TreeNode[int]{
 				Data: 1,
 			},
-			Right: &TreeNode[int]{
-				Data: 5,
+			Expected: 1,
+		},
+		{
+			Root: &TreeNode[int]{
+				Data: 9,
+				Right: &TreeNode[int]{
+					Data: 3,
+					Left: &TreeNode[int]{
+						Data: 6,
+					},
+				},
 			},
+			Expected: 1,
 		},
 	}
-	expected := 4
-	got := GoodNodes(root)
-	assert.Assert(t, expected == got, "expected %d, got %d\n", expected, got)
-	got = GoodNodes_DFS(root)
-	assert.Assert(t, expected == got, "expected %d, got %d\n", expected, got)
-
-	root = &TreeNode[int]{
-		Data: 3,
-		Left: &TreeNode[int]{
-			Data: 3,
-			Left: &TreeNode[int]{
-				Data: 4,
-			},
-			Right: &TreeNode[int]{
-				Data: 2,
-			},
-		},
+	for _, test := range tests {
+		got := GoodNodes(test.Root)
+		assert.Assert(t, test.Expected == got, "expected %d, got %d\n", test.Expected, got)
+		got = GoodNodes_DFS(test.Root)
+		assert.Assert(t, test.Expected == got, "expected %d, got %d\n", test.Expected, got)
 	}
-	expected = 3
-	got = GoodNodes(root)
-	assert.Assert(t, expected == got, "expected %d, got %d\n", expected, got)
-	got = GoodNodes_DFS(root)
-	assert.Assert(t, expected == got, "expected %d, got %d\n", expected, got)
-
-	root = &TreeNode[int]{
-		Data: 1,
-	}
-	expected = 1
-	got = GoodNodes(root)
-	assert.Assert(t, expected == got, "expected %d, got %d\n", expected, got)
-	got = GoodNodes_DFS(root)
-	assert.Assert(t, expected == got, "expected %d, got %d\n", expected, got)
-
-	root = &TreeNode[int]{
-		Data: 9,
-		Right: &TreeNode[int]{
-			Data: 3,
-			Left: &TreeNode[int]{
-				Data: 6,
-			},
-		},
-	}
-	expected = 1
-	got = GoodNodes(root)
-	assert.Assert(t, expected == got, "expected %d, got %d\n", expected, got)
-	got = GoodNodes_DFS(root)
-	assert.Assert(t, expected == got, "expected %d, got %d\n", expected, got)
 }

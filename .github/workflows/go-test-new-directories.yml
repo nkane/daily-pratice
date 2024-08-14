@@ -34,11 +34,14 @@ jobs:
             changed_dirs=$(git diff --name-only HEAD~1 HEAD | xargs -I {} dirname {} | sort | uniq)
           fi
 
+          # Filter out directories containing '_template'
+          filtered_dirs=$(echo "$changed_dirs" | grep -v '_template')
+
           # Print the directories to be tested
-          echo "Directories to be tested: $changed_dirs"
+          echo "Directories to be tested: $filtered_dirs"
 
           # Escape directory names for use in environment variables
-          escaped_dirs=$(echo $changed_dirs | sed 's/ /%20/g')
+          escaped_dirs=$(echo $filtered_dirs | sed 's/ /%20/g')
           echo "escaped_dirs=$escaped_dirs" >> $GITHUB_ENV
 
       - name: Run Tests

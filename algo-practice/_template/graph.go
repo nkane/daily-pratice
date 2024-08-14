@@ -20,3 +20,11 @@ type Cell struct {
 func nearestExit(maze [][]byte, entrance []int) int {
 	return -1
 }
+
+func orangesRotting(grid [][]int) int {
+	return -1
+}
+
+func orangesRottingNeet(grid [][]int) int {
+	return -1
+}

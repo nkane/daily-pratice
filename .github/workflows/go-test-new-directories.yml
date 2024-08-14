@@ -37,7 +37,7 @@ jobs:
           echo "Directories: $changed_dirs"
 
           # Filter out directories containing '_template' or '.github'
-          filtered_dirs=$(echo "$changed_dirs" | grep -v '_template' | grep -v '.github')
+          filtered_dirs=$(echo "$changed_dirs" | grep -Ev '_template|.github')
 
           echo "Filtered Directories: $filtered_dirs"
 

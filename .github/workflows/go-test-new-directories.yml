@@ -34,9 +34,8 @@ jobs:
             changed_dirs=$(git diff --name-only HEAD~1 HEAD | xargs -I {} dirname {} | sort | uniq)
           fi
 
-          # Filter out directories containing '_template'
-          filtered_dirs=$(echo "$changed_dirs" | grep -v '_template')
-          filtered_dirs=$(echo "$changed_dirs" | grep -v '.github')
+          # Filter out directories containing '_template' or '.github'
+          filtered_dirs=$(echo "$changed_dirs" | grep -v '_template' | grep -v '.github')
           # Print the directories to be tested
           echo "Directories to be tested: $filtered_dirs"
 

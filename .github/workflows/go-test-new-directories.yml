@@ -36,6 +36,13 @@ jobs:
 
           # Filter out directories containing '_template' or '.github'
           filtered_dirs=$(echo "$changed_dirs" | grep -v '_template' | grep -v '.github')
+
+          # Exit gracefully if no directories are found
+          if [ -z "$filtered_dirs" ]; then
+            echo "No test directories found. Exiting."
+            exit 0
+          fi
+
           # Print the directories to be tested
           echo "Directories to be tested: $filtered_dirs"
 

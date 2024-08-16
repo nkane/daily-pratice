@@ -242,7 +242,71 @@ func TestGoodNodes(t *testing.T) {
 	for _, test := range tests {
 		got := GoodNodes(test.Node)
 		assert.Assert(t, test.Expected == got, "expected %d, got %d\n", test.Expected, got)
-		got = GoodNodes_DFS(test.Node)
+	}
+}
+
+func TestGoodNodes_DFS(t *testing.T) {
+	tests := []struct {
+		Node     *TreeNode[int]
+		Expected int
+	}{
+		{
+			Node: &TreeNode[int]{
+				Data: 3,
+				Left: &TreeNode[int]{
+					Data: 1,
+					Left: &TreeNode[int]{
+						Data: 3,
+					},
+				},
+				Right: &TreeNode[int]{
+					Data: 4,
+					Left: &TreeNode[int]{
+						Data: 1,
+					},
+					Right: &TreeNode[int]{
+						Data: 5,
+					},
+				},
+			},
+			Expected: 4,
+		},
+		{
+			Node: &TreeNode[int]{
+				Data: 3,
+				Left: &TreeNode[int]{
+					Data: 3,
+					Left: &TreeNode[int]{
+						Data: 4,
+					},
+					Right: &TreeNode[int]{
+						Data: 2,
+					},
+				},
+			},
+			Expected: 3,
+		},
+		{
+			Node: &TreeNode[int]{
+				Data: 1,
+			},
+			Expected: 1,
+		},
+		{
+			Node: &TreeNode[int]{
+				Data: 9,
+				Right: &TreeNode[int]{
+					Data: 3,
+					Left: &TreeNode[int]{
+						Data: 6,
+					},
+				},
+			},
+			Expected: 1,
+		},
+	}
+	for _, test := range tests {
+		got := GoodNodes_DFS(test.Node)
 		assert.Assert(t, test.Expected == got, "expected %d, got %d\n", test.Expected, got)
 	}
 }

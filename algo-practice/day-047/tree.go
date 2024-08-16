@@ -44,12 +44,14 @@ func BFS[T any](node *TreeNode[T]) {
 	for len(q) > 0 {
 		n := q[0]
 		q = q[1:]
-		fmt.Print(n.Data, " ")
-		if n.Left != nil {
-			q = append(q, n.Left)
-		}
-		if n.Right != nil {
-			q = append(q, n.Right)
+		if node != nil {
+			fmt.Print(n.Data, " ")
+			if n.Left != nil {
+				q = append(q, n.Left)
+			}
+			if n.Right != nil {
+				q = append(q, n.Right)
+			}
 		}
 	}
 }
@@ -58,12 +60,12 @@ func MaxDepth_DFS_Recursive[T any](node *TreeNode[T]) int {
 	if node == nil {
 		return 0
 	}
-	maxLeft := MaxDepth_DFS_Recursive(node.Left) + 1
-	maxRight := MaxDepth_DFS_Recursive(node.Right) + 1
-	if maxLeft > maxRight {
-		return maxLeft
+	leftMax := MaxDepth_DFS_Recursive(node.Left) + 1
+	rightMax := MaxDepth_DFS_Recursive(node.Right) + 1
+	if leftMax > rightMax {
+		return leftMax
 	}
-	return maxRight
+	return rightMax
 }
 
 func MaxDepth_BFS[T any](node *TreeNode[T]) int {
@@ -76,11 +78,13 @@ func MaxDepth_BFS[T any](node *TreeNode[T]) int {
 		for i := 0; i < l; i++ {
 			n := q[0]
 			q = q[1:]
-			if n.Left != nil {
-				q = append(q, n.Left)
-			}
-			if n.Right != nil {
-				q = append(q, n.Right)
+			if n != nil {
+				if n.Left != nil {
+					q = append(q, n.Left)
+				}
+				if n.Right != nil {
+					q = append(q, n.Right)
+				}
 			}
 		}
 		depth++

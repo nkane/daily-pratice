@@ -139,7 +139,7 @@ func TestBFS(t *testing.T) {
 	}
 }
 
-func TestMaxDepth(t *testing.T) {
+func TestMaxDepth_DFS_Recursive(t *testing.T) {
 	root := TreeNode[int]{
 		Data: 3,
 		Left: &TreeNode[int]{
@@ -166,11 +166,65 @@ func TestMaxDepth(t *testing.T) {
 	for _, test := range tests {
 		got := MaxDepth_DFS_Recursive(&root)
 		assert.Assert(t, got == test.Expected)
+	}
+}
 
-		got = MaxDepth_BFS(&root)
+func TestMaxDepth_BFS(t *testing.T) {
+	root := TreeNode[int]{
+		Data: 3,
+		Left: &TreeNode[int]{
+			Data: 9,
+		},
+		Right: &TreeNode[int]{
+			Data: 20,
+			Left: &TreeNode[int]{
+				Data: 15,
+			},
+			Right: &TreeNode[int]{
+				Data: 7,
+			},
+		},
+	}
+
+	tests := []struct {
+		Expected int
+	}{
+		{
+			Expected: 3,
+		},
+	}
+	for _, test := range tests {
+		got := MaxDepth_BFS(&root)
 		assert.Assert(t, got == test.Expected)
+	}
+}
 
-		got = MaxDepth_DFS_Preorder_Iterative(&root)
+func TestMaxDepth_DFS_Preorder_Iterative(t *testing.T) {
+	root := TreeNode[int]{
+		Data: 3,
+		Left: &TreeNode[int]{
+			Data: 9,
+		},
+		Right: &TreeNode[int]{
+			Data: 20,
+			Left: &TreeNode[int]{
+				Data: 15,
+			},
+			Right: &TreeNode[int]{
+				Data: 7,
+			},
+		},
+	}
+
+	tests := []struct {
+		Expected int
+	}{
+		{
+			Expected: 3,
+		},
+	}
+	for _, test := range tests {
+		got := MaxDepth_BFS(&root)
 		assert.Assert(t, got == test.Expected)
 	}
 }

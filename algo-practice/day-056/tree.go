@@ -180,7 +180,7 @@ func DFS[T constraints.Ordered](node *TreeNode[T], maxValue T) int {
 		return 0
 	}
 	res := 0
-	if node.Data > maxValue {
+	if node.Data >= maxValue {
 		maxValue = node.Data
 		res++
 	}
